@@ -1,1 +1,0 @@
-// Kud ka location
