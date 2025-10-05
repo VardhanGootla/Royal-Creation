@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 function BookingPage() {
   const location = useLocation();
   const eventData = location.state?.event || {};
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const {
     title = 'Selected Event',
@@ -34,8 +35,7 @@ function BookingPage() {
       },
     };
     // Replace with API call if available
-    // eslint-disable-next-line no-alert
-    alert('Thank you! We have received your booking inquiry. our team will get back to you in 24 hours.');
+    setShowSuccess(true);
     // For debugging
     // eslint-disable-next-line no-console
     console.log('Booking payload:', payload);
@@ -47,7 +47,6 @@ function BookingPage() {
       <div className="row g-4">
         <div className="col-12">
           <h1 className="h2 mb-1">Book Your Event</h1>
-          <p className="text-muted mb-0">We\'ll get back to you shortly with availability and next steps.</p>
         </div>
 
         <div className="col-lg-6">
@@ -137,6 +136,14 @@ function BookingPage() {
         <div className="col-lg-6">
           <div className="card h-100 shadow-sm">
             <div className="card-body">
+              {showSuccess ? (
+                <div className="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+                  <div>
+                    Thank you! We have received your booking inquiry. our team will contact you within few hours.
+                  </div>
+                  <button type="button" className="btn-close ms-auto" aria-label="Close" onClick={() => setShowSuccess(false)}></button>
+                </div>
+              ) : null}
               <h5 className="card-title mb-3">Send us your details</h5>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
