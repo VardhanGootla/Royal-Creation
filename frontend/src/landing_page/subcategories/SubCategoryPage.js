@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Card, Button, Modal } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 
 const SubCategoryPage = ({ subcategory }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const navigate = useNavigate();
 
   const handleShowModal = (item) => {
     setSelectedItem(item);
@@ -160,7 +162,13 @@ const SubCategoryPage = ({ subcategory }) => {
                       <Button variant="link" className="btn-details me-2" onClick={() => handleShowModal(item)}>
                         View Details
                       </Button>
-                      <Button variant="link" className="btn-book">Book Now</Button>
+                      <Button
+                        variant="link"
+                        className="btn-book"
+                        onClick={() => navigate('/booking', { state: { event: item } })}
+                      >
+                        Book Now
+                      </Button>
                     </div>
                   </Card.Body>
                 </Card>

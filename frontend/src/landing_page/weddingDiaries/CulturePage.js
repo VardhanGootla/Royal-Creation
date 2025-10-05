@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Card, Button, Modal } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 
 const CulturePage = ({ culture }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedWedding, setSelectedWedding] = useState(null);
+  const navigate = useNavigate();
 
   const handleShowModal = (wedding) => {
     setSelectedWedding(wedding);
@@ -160,7 +162,13 @@ const CulturePage = ({ culture }) => {
                       <Button variant="link" className="btn-details me-2" onClick={() => handleShowModal(wedding)}>
                         View Details
                       </Button>
-                      <Button variant="link" className="btn-book">Book Now</Button>
+                      <Button
+                        variant="link"
+                        className="btn-book"
+                        onClick={() => navigate('/booking', { state: { event: wedding } })}
+                      >
+                        Book Now
+                      </Button>
                     </div>
                   </Card.Body>
                 </Card>

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Card, Button, Modal } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 
 const AnniversaryCategoryPage = ({ category }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedAnniversary, setSelectedAnniversary] = useState(null);
+  const navigate = useNavigate();
 
   const handleShowModal = (anniversary) => {
     setSelectedAnniversary(anniversary);
@@ -160,7 +162,13 @@ const AnniversaryCategoryPage = ({ category }) => {
                       <Button variant="link" className="btn-details me-2" onClick={() => handleShowModal(anniversary)}>
                         View Details
                       </Button>
-                      <Button variant="link" className="btn-book">Book Now</Button>
+                      <Button
+                        variant="link"
+                        className="btn-book"
+                        onClick={() => navigate('/booking', { state: { event: anniversary } })}
+                      >
+                        Book Now
+                      </Button>
                     </div>
                   </Card.Body>
                 </Card>
@@ -228,7 +236,11 @@ const AnniversaryCategoryPage = ({ category }) => {
             <Button variant="secondary" onClick={handleCloseModal}>
               Close
             </Button>
-            <Button variant="primary" className="btn-details">
+            <Button
+              variant="primary"
+              className="btn-details"
+              onClick={() => navigate('/booking', { state: { event: selectedAnniversary } })}
+            >
               Book This Package
             </Button>
           </Modal.Footer>

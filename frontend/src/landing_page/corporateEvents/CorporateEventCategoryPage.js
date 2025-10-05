@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Card, Button, Modal } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 
 const CorporateEventCategoryPage = ({ category }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const navigate = useNavigate();
 
   const handleShowModal = (event) => {
     setSelectedEvent(event);
@@ -160,7 +162,13 @@ const CorporateEventCategoryPage = ({ category }) => {
                       <Button variant="link" className="btn-details me-2" onClick={() => handleShowModal(event)}>
                         View Details
                       </Button>
-                      <Button variant="link" className="btn-book">Book Now</Button>
+                      <Button
+                        variant="link"
+                        className="btn-book"
+                        onClick={() => navigate('/booking', { state: { event: event } })}
+                      >
+                        Book Now
+                      </Button>
                     </div>
                   </Card.Body>
                 </Card>
@@ -228,7 +236,11 @@ const CorporateEventCategoryPage = ({ category }) => {
             <Button variant="secondary" onClick={handleCloseModal}>
               Close
             </Button>
-            <Button variant="primary" className="btn-details">
+            <Button
+              variant="primary"
+              className="btn-details"
+              onClick={() => navigate('/booking', { state: { event: selectedEvent } })}
+            >
               Book This Package
             </Button>
           </Modal.Footer>

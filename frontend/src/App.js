@@ -42,6 +42,7 @@ import Conferences from './landing_page/corporateEvents/Conferences';
 import ProductLaunches from './landing_page/corporateEvents/ProductLaunches';
 import TeamBuilding from './landing_page/corporateEvents/TeamBuilding';
 import Navbar from './landing_page/Navbar';
+import BookingPage from './landing_page/BookingPage';
 import Footer from './landing_page/Footer';
 import { subcategoryData } from './landing_page/subcategories/subcategoryData';
 import SubCategoryPage from './landing_page/subcategories/SubCategoryPage';
@@ -68,6 +69,7 @@ function App() {
       <Route path="/blog/event-budgeting" element={<EventBudgeting />} />
       <Route path="/blog/decor-trends" element={<DecorTrends />} />
       <Route path="/book-event" element={<ContactUs />} />
+      <Route path="/booking" element={<BookingPage />} />
       <Route path="/details" element={<div>Details Page Placeholder</div>} />
       <Route path="/admin/dashboard/*" element={<AdminDashboard />} />
       <Route path="/weddings" element={<WeddingCategoriesPage />} />
