@@ -23,6 +23,7 @@ const ContactUs = () => {
   const [selectedEvent, setSelectedEvent] = useState(preselectedEvent || null);
   const [errorMessage, setErrorMessage] = useState('');
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', date: '' });
+  const [showSuccess, setShowSuccess] = useState(false);
   
   // Initialize the navigate function
   const navigate = useNavigate();
@@ -57,8 +58,11 @@ const ContactUs = () => {
 
       if (response.ok) {
         console.log('Quotation request submitted successfully');
-        // Navigate to the details page and pass the form data in the state
-        navigate('/', { state: { submission: quotationRequest } });
+        setShowSuccess(true);
+        setErrorMessage('');
+        // Optionally reset the form
+        setFormData({ name: '', email: '', phone: '', date: '' });
+        setSelectedEvent(null);
       } else {
         const errorData = await response.json();
         setErrorMessage(errorData.message || 'Failed to submit quotation request.');
@@ -76,6 +80,7 @@ const ContactUs = () => {
         <div className="booking-card">
           <h1 className="booking-title">Plan Your Perfect Event</h1>
           <p className="booking-subtitle">Select an event and fill out your details to get a personalized suggestion.</p>
+
 
           <form onSubmit={handleSubmit}>
             <div className="form-section d-block">
@@ -110,7 +115,16 @@ const ContactUs = () => {
             
             {errorMessage && <p className="error-message">{errorMessage}</p>}
 
-            <button type="submit" className="submit-btn">Contact Us</button>
+            <button type="submit" className="submit-btn mb-5">Contact Us</button>
+            {showSuccess ? (
+              <div className="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+                <div>
+                  Thank you! We have received your request. Our team will contact you within a few hours.
+                </div>
+                <button type="button" className="btn-close ms-auto" aria-label="Close" onClick={() => setShowSuccess(false)}></button>
+              </div>
+            ) : null}
+
           </form>
         </div>
       </div>
