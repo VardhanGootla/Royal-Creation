@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from './Navbar';
-import Footer from './Footer';
+
 
 // Expanded list of blog posts for the dedicated page
 const allBlogPosts = [
@@ -54,7 +53,7 @@ const themeColor = 'rgb(255, 102, 163)';
 function BlogPage() {
   return (
     <>
-      <Navbar />
+    
       <header className="py-5" style={{ backgroundColor: '#fdf2f7' }}>
         <div className="container text-center">
           <h1 className="display-4 fw-bold" style={{ color: themeColor }}>Our Blog</h1>
@@ -82,7 +81,7 @@ function BlogPage() {
           </div>
         </div>
       </section>
-      <Footer />
+    
     </>
   );
 }

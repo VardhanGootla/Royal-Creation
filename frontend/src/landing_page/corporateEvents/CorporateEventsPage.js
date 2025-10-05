@@ -90,6 +90,6 @@ const CorporateEventsPage = () => {
       </Container>
     </>
   );
-};
+}
 
 export default CorporateEventsPage;

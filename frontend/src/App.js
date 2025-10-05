@@ -25,9 +25,22 @@ import Marwadi from './landing_page/weddingDiaries/WeddingsByCultur/Marwadi';
 import Punjabi from './landing_page/weddingDiaries/WeddingsByCultur/Punjabi';
 import Telugu from './landing_page/weddingDiaries/WeddingsByCultur/Telugu';
 import BirthdayPartiesPage from './landing_page/birthdayParties/BirthdayPartiesPage';
+import KidsBirthday from './landing_page/birthdayParties/KidsBirthday';
+import AdultsBirthday from './landing_page/birthdayParties/AdultsBirthday';
+import ThemedBirthday from './landing_page/birthdayParties/ThemedBirthday';
+import SurpriseBirthday from './landing_page/birthdayParties/SurpriseBirthday';
 import EngagementPage from './landing_page/engagement/EngagementPage';
+import TraditionalEngagement from './landing_page/engagement/TraditionalEngagement';
+import ModernEngagement from './landing_page/engagement/ModernEngagement';
+import SurpriseEngagement from './landing_page/engagement/SurpriseEngagement';
 import AnniversariesPage from './landing_page/anniversaries/AnniversariesPage';
+import SilverAnniversary from './landing_page/anniversaries/SilverAnniversary';
+import GoldenAnniversary from './landing_page/anniversaries/GoldenAnniversary';
+import MilestoneAnniversary from './landing_page/anniversaries/MilestoneAnniversary';
 import CorporateEventsPage from './landing_page/corporateEvents/CorporateEventsPage';
+import Conferences from './landing_page/corporateEvents/Conferences';
+import ProductLaunches from './landing_page/corporateEvents/ProductLaunches';
+import TeamBuilding from './landing_page/corporateEvents/TeamBuilding';
 import Navbar from './landing_page/Navbar';
 import Footer from './landing_page/Footer';
 
@@ -62,9 +75,25 @@ function App() {
       <Route path="/weddings/punjabi" element={<Punjabi />} />
       <Route path="/weddings/telugu" element={<Telugu />} />
       <Route path="/birthdays" element={<BirthdayPartiesPage />} />
+      <Route path="/birthdays/kids" element={<KidsBirthday />} />
+      <Route path="/birthdays/adults" element={<AdultsBirthday />} />
+      <Route path="/birthdays/themed" element={<ThemedBirthday />} />
+      <Route path="/birthdays/surprise" element={<SurpriseBirthday />} />
+
       <Route path="/engagements" element={<EngagementPage />} />
+      <Route path="/engagements/traditional" element={<TraditionalEngagement />} />
+      <Route path="/engagements/modern" element={<ModernEngagement />} />
+      <Route path="/engagements/surprise" element={<SurpriseEngagement />} />
+      
       <Route path="/anniversaries" element={<AnniversariesPage />} />
+      <Route path="/anniversaries/25th" element={<SilverAnniversary />} />
+      <Route path="/anniversaries/50th" element={<GoldenAnniversary />} />
+      <Route path="/anniversaries/milestone" element={<MilestoneAnniversary />} />
+      
       <Route path="/corporate-events" element={<CorporateEventsPage />} />
+      <Route path="/corporate-events/conferences" element={<Conferences />} />
+      <Route path="/corporate-events/product-launches" element={<ProductLaunches />} />
+      <Route path="/corporate-events/team-building" element={<TeamBuilding />} />
     </Routes>
     </main>
     <Footer/>

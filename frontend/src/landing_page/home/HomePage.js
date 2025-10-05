@@ -5,9 +5,7 @@ import EventCategory from './EventCategory';
 import ContactUs from './ContactUs';
 import Reviews from './Reviews';
 import Blog from './Blog';
-import OpenAccount from '../OpenAccount'; // This should work
-import Navbar from '../Navbar'; // This should work
-import Footer from '../Footer'; // This should work
+import OpenAccount from '../OpenAccount'; 
 
 function HomePage() {
   return (

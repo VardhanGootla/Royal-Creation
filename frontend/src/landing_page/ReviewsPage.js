@@ -1,6 +1,5 @@
 import React from 'react';
-import Navbar from './Navbar';
-import Footer from './Footer';
+
 
 // Expanded list of reviews for the dedicated page
 const allReviews = [
@@ -53,7 +52,7 @@ const themeColor = 'rgb(255, 102, 163)';
 function ReviewsPage() {
   return (
     <>
-      <Navbar />
+      
       <header className="py-5" style={{ backgroundColor: '#fdf2f7' }}>
         <div className="container text-center">
           <h1 className="display-4 fw-bold" style={{ color: themeColor }}>Client Testimonials</h1>
@@ -83,7 +82,7 @@ function ReviewsPage() {
           </div>
         </div>
       </section>
-      <Footer />
+    
     </>
   );
 }

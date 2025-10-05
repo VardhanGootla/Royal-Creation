@@ -1,6 +1,5 @@
 import React from 'react';
-import Navbar from './landing_page/Navbar';
-import Footer from './landing_page/Footer';
+
 import { Link } from 'react-router-dom';
 
 const services = [
@@ -308,7 +307,7 @@ function ServicesPage() {
   return (
     <>
       <style>{styles}</style>
-      <Navbar />
+     
 
       {/* Page Header */}
       <header className="services-header">
@@ -370,7 +369,7 @@ function ServicesPage() {
         </div>
       </section>
 
-      <Footer />
+     
     </>
   );
 }
