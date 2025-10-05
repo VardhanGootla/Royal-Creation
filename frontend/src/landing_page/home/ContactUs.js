@@ -12,6 +12,7 @@ const events = [
   { name: 'Baby Shower', img: 'https://images.pexels.com/photos/6691674/pexels-photo-6691674.jpeg' },
   { name: 'Catering Service', img: 'https://images.pexels.com/photos/6691674/pexels-photo-6691674.jpeg' },
   { name: 'Naming Ceremony', img: 'https://images.pexels.com/photos/6691674/pexels-photo-6691674.jpeg' },
+  { name: 'Other', img: 'https://images.pexels.com/photos/6691674/pexels-photo-6691674.jpeg' },
 ];
 
 const ContactUs = () => {
@@ -57,7 +58,7 @@ const ContactUs = () => {
       if (response.ok) {
         console.log('Quotation request submitted successfully');
         // Navigate to the details page and pass the form data in the state
-        navigate('/services', { state: { submission: quotationRequest } });
+        navigate('/', { state: { submission: quotationRequest } });
       } else {
         const errorData = await response.json();
         setErrorMessage(errorData.message || 'Failed to submit quotation request.');

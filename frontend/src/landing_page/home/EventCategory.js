@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const categories = [
   {
-    title: "Wedding",
+    title: "Wedding Venues",
     route: "/wedding",
     img: "https://image.wedmegood.com/resized/250X/uploads/m_v_cat_image/2/photographers.jpg",
     color: "#f4d5c2",
@@ -66,7 +66,7 @@ const EventCategories = () => {
 
   return (
     <div className="container my-5 ">
-       <h2 className="mb-4 text-center fw-bold mt-5">Event Categories</h2>
+       <h2 className="mb-4 text-center fw-bold mt-5" >Event Services</h2>
       <div className="row">
         {categories.map((cat, index) => (
           <div key={index} className="col-md-6 mb-4">
