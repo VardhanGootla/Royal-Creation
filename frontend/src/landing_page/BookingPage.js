@@ -35,7 +35,7 @@ function BookingPage() {
     };
     // Replace with API call if available
     // eslint-disable-next-line no-alert
-    alert('Thank you! We\'ve received your booking inquiry.');
+    alert('Thank you! We have received your booking inquiry. our team will get back to you in 24 hours.');
     // For debugging
     // eslint-disable-next-line no-console
     console.log('Booking payload:', payload);
@@ -69,6 +69,66 @@ function BookingPage() {
                     ))}
                   </ul>
                 </>
+              ) : null}
+
+              {Array.isArray(pricing?.breakdown) && pricing.breakdown.length > 0 ? (
+                <div className="mt-4">
+                  <h6 className="mb-2">Pricing Breakdown</h6>
+                  <div className="table-responsive">
+                    <table className="table align-middle mb-0">
+                      <thead>
+                        <tr>
+                          <th style={{ width: '60%' }}>Service</th>
+                          <th className="text-end">Cost</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {pricing.breakdown.map((row, idx) => (
+                          <tr key={idx}>
+                            <td>{row.service}</td>
+                            <td className="text-end">{row.cost}</td>
+                          </tr>
+                        ))}
+                        {pricing.total ? (
+                          <tr>
+                            <td><strong>Total</strong></td>
+                            <td className="text-end"><strong>{pricing.total}</strong></td>
+                          </tr>
+                        ) : null}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              ) : null}
+
+              {!pricing?.breakdown && Array.isArray(expenses?.breakdown) && expenses.breakdown.length > 0 ? (
+                <div className="mt-4">
+                  <h6 className="mb-2">Expense Details</h6>
+                  <div className="table-responsive">
+                    <table className="table align-middle mb-0">
+                      <thead>
+                        <tr>
+                          <th style={{ width: '60%' }}>Item</th>
+                          <th className="text-end">Cost</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {expenses.breakdown.map((row, idx) => (
+                          <tr key={idx}>
+                            <td>{row.item}</td>
+                            <td className="text-end">{row.cost}</td>
+                          </tr>
+                        ))}
+                        {expenses.total ? (
+                          <tr>
+                            <td><strong>Total</strong></td>
+                            <td className="text-end"><strong>{expenses.total}</strong></td>
+                          </tr>
+                        ) : null}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               ) : null}
             </div>
           </div>
