@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 
 import HomePage from './landing_page/home/HomePage';
 import AboutPage from './landing_page/AboutPage'; // Correct path for AboutPage
@@ -52,11 +52,16 @@ import { AuthProvider } from './hooks/AuthContext';
 
 import ScrollToTop from './components/ScrollToTop';
 
+import ProtectedRoute from './components/ProtectedRoute';
+
 function App() {
+  const location = useLocation();
+  const isAdminPage = location.pathname.startsWith('/admin');
+
   return (
      <AuthProvider>
     <ScrollToTop />
-    <Navbar/>
+    {!isAdminPage && <Navbar/>}
     
     <main>
       <Routes>
@@ -73,8 +78,8 @@ function App() {
       <Route path="/blog/venue-selection-guide" element={<VenueSelectionGuide />} />
       <Route path="/blog/event-budgeting" element={<EventBudgeting />} />
       <Route path="/blog/decor-trends" element={<DecorTrends />} />
-      <Route path="/book-event" element={<ContactUs />} />
-      <Route path="/booking" element={<BookingPage />} />
+      <Route path="/book-event" element={<ProtectedRoute><ContactUs /></ProtectedRoute>} />
+      <Route path="/booking" element={<ProtectedRoute><BookingPage /></ProtectedRoute>} />
       <Route path="/details" element={<div>Details Page Placeholder</div>} />
       <Route path="/admin/dashboard/*" element={<AdminDashboard />} />
       <Route path="/weddings" element={<WeddingCategoriesPage />} />
@@ -113,7 +118,7 @@ function App() {
       ))}
     </Routes>
     </main>
-    <Footer/>
+    {!isAdminPage && <Footer/>}
    </AuthProvider>
   );
 }

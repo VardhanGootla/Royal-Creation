@@ -41,10 +41,10 @@ function PopularSearch() {
                     src={item.img}
                     className="card-img-top"
                     alt={item.text}
-                    style={{ height: "180px", objectFit: "cover" }}
+                    style={{ height: "220px", objectFit: "cover" }}
                   />
                   <div className="card-body text-center">
-                    <p className="fw-bold mb-0">{item.text}</p>
+                    <p className="fw-bold mb-0" style={{ fontSize: '1.1rem' }}>{item.text}</p>
                   </div>
                 </div>
               </Link>

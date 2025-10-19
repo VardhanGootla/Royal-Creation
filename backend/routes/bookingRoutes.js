@@ -4,17 +4,18 @@ const Booking = require('../models/bookingModel');
 
 // @route   POST api/bookings
 // @desc    Create a new booking
-// @access  Private
+// @access  Public
 router.post('/', async (req, res) => {
-  const { user, eventDate, eventType, numberOfGuests, services } = req.body;
+  const { name, email, phone, date, budget, event } = req.body;
 
   try {
     const newBooking = new Booking({
-      user,
-      eventDate,
-      eventType,
-      numberOfGuests,
-      services,
+      name,
+      email,
+      phone,
+      eventDate: date,
+      eventType: event,
+      budget,
     });
 
     const booking = await newBooking.save();
@@ -31,7 +32,7 @@ router.post('/', async (req, res) => {
 // @access  Private
 router.get('/', async (req, res) => {
   try {
-    const bookings = await Booking.find().populate('user', ['name', 'email']);
+    const bookings = await Booking.find();
     res.json(bookings);
   } catch (err) {
     console.error(err.message);

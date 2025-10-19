@@ -4,7 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 
 function Navbar() {
   const location = useLocation();
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, currentUser } = useAuth();
 
   const brandStyle = {
     fontWeight: '700',
@@ -141,11 +141,14 @@ function Navbar() {
                 <Link className={`nav-link ${location.pathname === '/blog' ? 'active' : ''}`} to="/blog" style={navLinkStyle}>Blog</Link>
               </li>
             </ul>
-            <div className="nav-buttons d-flex align-items-center">
-              {isAuthenticated ? (
-                <button onClick={logout} className="btn btn-signin" style={secondaryButtonStyle}>
-                  Sign Out
-                </button>
+            <div class="nav-buttons d-flex align-items-center">
+              {isAuthenticated && currentUser ? (
+                <>
+                  <span class="text-white me-3">Hello, {currentUser.name}</span>
+                  <button onClick={logout} className="btn btn-signin" style={secondaryButtonStyle}>
+                    Logout
+                  </button>
+                </>
               ) : (
                 <Link to="/signin" className="btn btn-signin" style={secondaryButtonStyle}>
                   Sign In

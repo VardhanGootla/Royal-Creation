@@ -214,40 +214,21 @@ function Overview() {
 
 // Bookings Component
 function Bookings() {
-  const bookings = [
-    {
-      id: "#BK001",
-      customer: "John Doe",
-      service: "Wedding Planning",
-      date: "2024-01-15",
-      status: "Confirmed",
-      amount: "$2,500",
-    },
-    {
-      id: "#BK002",
-      customer: "Sarah Smith",
-      service: "Birthday Party",
-      date: "2024-01-16",
-      status: "Pending",
-      amount: "$800",
-    },
-    {
-      id: "#BK003",
-      customer: "Mike Johnson",
-      service: "Corporate Event",
-      date: "2024-01-17",
-      status: "Confirmed",
-      amount: "$3,200",
-    },
-    {
-      id: "#BK004",
-      customer: "Emily Davis",
-      service: "Anniversary",
-      date: "2024-01-18",
-      status: "Cancelled",
-      amount: "$1,200",
-    },
-  ];
+  const [bookings, setBookings] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/bookings");
+        const data = await response.json();
+        setBookings(data);
+      } catch (error) {
+        console.error("Error fetching bookings:", error);
+      }
+    };
+
+    fetchBookings();
+  }, []);
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -290,11 +271,11 @@ function Bookings() {
             </thead>
             <tbody>
               {bookings.map((booking) => (
-                <tr key={booking.id}>
-                  <td>{booking.id}</td>
-                  <td>{booking.customer}</td>
-                  <td>{booking.service}</td>
-                  <td>{booking.date}</td>
+                <tr key={booking._id}>
+                  <td>{booking._id}</td>
+                  <td>{booking.name}</td>
+                  <td>{booking.eventType}</td>
+                  <td>{new Date(booking.eventDate).toLocaleDateString()}</td>
                   <td>
                     <span
                       className={`status-badge ${getStatusClass(
@@ -304,7 +285,7 @@ function Bookings() {
                       {booking.status}
                     </span>
                   </td>
-                  <td>{booking.amount}</td>
+                  <td>${booking.budget ? booking.budget.toFixed(2) : '0.00'}</td>
                   <td>
                     <div className="action-buttons">
                       <button className="btn-edit">Edit</button>
@@ -359,6 +340,7 @@ function Contacts() {
                 <th>Email</th>
                 <th>Event Date</th>
                 <th>Event Type</th>
+                <th>Budget</th>
               </tr>
             </thead>
             <tbody>
@@ -368,6 +350,7 @@ function Contacts() {
                   <td>{quote.email}</td>
                   <td>{new Date(quote.eventDate).toLocaleDateString()}</td>
                   <td>{quote.eventType}</td>
+                  <td>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(quote.budget)}</td>
                 </tr>
               ))}
             </tbody>
@@ -452,42 +435,8 @@ function Users() {
   );
 }
 
-// Services Component
 function Services() {
-  const [services, setServices] = useState([
-    {
-      id: 1,
-      name: "Wedding Planning",
-      category: "Wedding",
-      price: "$2,000+",
-      status: "Active",
-      bookings: 45,
-    },
-    {
-      id: 2,
-      name: "Birthday Party",
-      category: "Party",
-      price: "$500+",
-      status: "Active",
-      bookings: 23,
-    },
-    {
-      id: 3,
-      name: "Corporate Event",
-      category: "Corporate",
-      price: "$1,500+",
-      status: "Active",
-      bookings: 18,
-    },
-    {
-      id: 4,
-      name: "Anniversary",
-      category: "Celebration",
-      price: "$800+",
-      status: "Inactive",
-      bookings: 8,
-    },
-  ]);
+  const [services, setServices] = React.useState([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -495,6 +444,20 @@ function Services() {
     price: "",
     category: "",
   });
+
+  React.useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/services");
+        const data = await response.json();
+        setServices(data);
+      } catch (error) {
+        console.error("Error fetching services:", error);
+      }
+    };
+
+    fetchServices();
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -540,13 +503,12 @@ function Services() {
 
       <div className="services-grid">
         {services.map((service) => (
-          <div key={service.id} className="service-card">
+          <div key={service._id} className="service-card">
             <div className="service-header">
               <h3>{service.name}</h3>
               <span
-                className={`service-status ${service.status.toLowerCase()}`}
-              >
-                {service.status}
+                className={`service-status ${service.status ? service.status.toLowerCase() : 'active'}`}>
+                {service.status || 'Active'}
               </span>
             </div>
             <div className="service-details">
@@ -557,7 +519,7 @@ function Services() {
                 <strong>Price:</strong> {service.price}
               </p>
               <p>
-                <strong>Bookings:</strong> {service.bookings}
+                <strong>Bookings:</strong> {service.bookings || 0}
               </p>
             </div>
             <div className="service-actions">
@@ -640,7 +602,7 @@ function Services() {
 
 // Vendors Component
 function Vendors() {
-  const [vendors, setVendors] = useState([]);
+  const [vendors, setVendors] = React.useState([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -648,6 +610,20 @@ function Vendors() {
     contact: "",
     email: "",
   });
+
+  React.useEffect(() => {
+    const fetchVendors = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/vendors");
+        const data = await response.json();
+        setVendors(data);
+      } catch (error) {
+        console.error("Error fetching vendors:", error);
+      }
+    };
+
+    fetchVendors();
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

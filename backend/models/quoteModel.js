@@ -27,6 +27,9 @@ const quoteSchema = new mongoose.Schema({
   message: {
     type: String,
   },
+  budget: {
+    type: Number,
+  },
 }, {
   timestamps: true,
 });

@@ -19,27 +19,42 @@ function BookingPage() {
 
   const derivedStartingPrice = startingPrice || pricing?.total || expenses?.total || '';
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    const budgetValue = formData.get('budget') || '';
+    const numericBudgetValue = parseInt(budgetValue.replace(/\D/g, ''), 10) || 0;
+
     const payload = {
       name: formData.get('name') || '',
-      contact: formData.get('contact') || '',
-      venue: formData.get('venue') || '',
-      eventDate: formData.get('eventDate') || '',
-      budget: formData.get('budget') || '',
-      location: formData.get('location') || '',
-      event: {
-        title,
-        startingPrice: derivedStartingPrice,
-      },
+      email: formData.get('email') || '',
+      phone: formData.get('contact') || '',
+      date: formData.get('eventDate') || '',
+      budget: numericBudgetValue,
+      event: title,
     };
-    // Replace with API call if available
-    setShowSuccess(true);
-    // For debugging
-    // eslint-disable-next-line no-console
-    console.log('Booking payload:', payload);
-    e.currentTarget.reset();
+    console.log('Sending booking request:', payload);
+
+    try {
+      const response = await fetch('http://localhost:5000/api/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        setShowSuccess(true);
+        e.currentTarget.reset();
+      } else {
+        const errorData = await response.json();
+        alert(errorData.message || 'Failed to submit booking request.');
+      }
+    } catch (error) {
+      console.error('An error occurred during fetch:', error.message, error);
+      alert('An error occurred. Please try again later.');
+    }
   };
 
   return (
@@ -137,18 +152,23 @@ function BookingPage() {
           <div className="card h-100 shadow-sm">
             <div className="card-body">
               {showSuccess ? (
-                <div className="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
-                  <div>
-                    Thank you! We have received your booking inquiry. our team will contact you within few hours.
-                  </div>
-                  <button type="button" className="btn-close ms-auto" aria-label="Close" onClick={() => setShowSuccess(false)}></button>
+                <div style={{ textAlign: 'center', padding: '40px 20px', border: '2px dashed #28a745', borderRadius: '15px', backgroundColor: '#f0fff4' }}>
+                  <h2 style={{ color: '#28a745', marginBottom: '15px' }}>Booking Confirmed!</h2>
+                  <p style={{ fontSize: '1.1rem', color: '#555' }}>Thank you for choosing Royal Creation. Our team will contact you shortly to finalize the details.</p>
+                  <button onClick={() => setShowSuccess(false)} style={{ marginTop: '20px', padding: '10px 25px', border: 'none', borderRadius: '5px', backgroundColor: '#28a745', color: 'white', fontSize: '1rem', cursor: 'pointer' }}>
+                    Close
+                  </button>
                 </div>
-              ) : null}
-              <h5 className="card-title mb-3">Send us your details</h5>
+              ) : (
               <form onSubmit={handleSubmit}>
+                <h5 className="card-title mb-3">Send us your details</h5>
                 <div className="mb-3">
                   <label className="form-label" htmlFor="name">Name</label>
                   <input id="name" name="name" type="text" className="form-control" required />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label" htmlFor="email">Email</label>
+                  <input id="email" name="email" type="email" className="form-control" required />
                 </div>
                 <div className="mb-3">
                   <label className="form-label" htmlFor="contact">Contact</label>
@@ -170,8 +190,9 @@ function BookingPage() {
                   <label className="form-label" htmlFor="location">Location</label>
                   <input id="location" name="location" type="text" className="form-control" defaultValue={eventLocation || ''} />
                 </div>
-                <button type="submit" className="btn btn-primary">Send Message</button>
+                <button type="submit" className="btn btn-primary">Book Now</button>
               </form>
+              )}
             </div>
           </div>
         </div>

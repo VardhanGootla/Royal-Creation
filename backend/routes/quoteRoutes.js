@@ -6,7 +6,7 @@ const Quote = require('../models/quoteModel');
 // @desc    Create a new quote
 // @access  Public
 router.post('/', async (req, res) => {
-  const { name, email, phone, date, event } = req.body;
+  const { name, email, phone, date, event, budget } = req.body;
 
   try {
     const newQuote = new Quote({
@@ -15,6 +15,7 @@ router.post('/', async (req, res) => {
       phone,
       eventDate: date,
       eventType: event,
+      budget,
       numberOfGuests: 0, // Assuming a default value
       message: '', // Assuming a default value
     });

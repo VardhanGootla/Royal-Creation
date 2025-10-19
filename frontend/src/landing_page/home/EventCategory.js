@@ -66,9 +66,12 @@ const EventCategories = () => {
 
   return (
     <div className="container my-5 ">
-        <h2 className="mb-4 text-center fw-bold mt-5 display-5" style={{ color: 'rgba(69, 67, 68, 1)' }}>
+      <h2
+        className="mb-4 text-center fw-bold mt-5 display-5"
+        style={{ color: "rgba(69, 67, 68, 1)" }}
+      >
         Event Services
-        </h2>
+      </h2>
       <div className="row">
         {categories.map((cat, index) => (
           <div key={index} className="col-md-6 mb-4">
@@ -83,13 +86,13 @@ const EventCategories = () => {
                 <div className="flex-grow-1">
                   <Link
                     to={cat.route}
-                    className="text-dark font-weight-bold h5 d-block mb-1 text-truncate"
+                    className="text-dark font-weight-bold h4 d-block mb-1 text-truncate"
                     style={{ textDecoration: "none" }}
                   >
                     {cat.title}
                   </Link>
                   <p
-                    className="text-secondary small mb-0 text-truncate"
+                    className="text-secondary mb-0 text-truncate"
                     style={{ maxWidth: "200px" }}
                   >
                     {cat.subcategories.map((sub) => sub.name).join(", ")}
@@ -100,8 +103,8 @@ const EventCategories = () => {
                 <div
                   className="ml-3"
                   style={{
-                    width: "120px",
-                    height: "120px",
+                    width: "150px",
+                    height: "150px",
                     overflow: "hidden",
                     borderRadius: "8px",
                   }}

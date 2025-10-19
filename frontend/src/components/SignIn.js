@@ -33,7 +33,7 @@ function SignIn() {
 
       if (response.ok) {
         const data = await response.json();
-        login(data.token);
+        login(data.token, data.user);
         console.log('Sign in successful');
         navigate('/');
       } else {
@@ -48,19 +48,19 @@ function SignIn() {
 
   // Add the missing handleAdminLogin function
   const handleAdminLogin = () => {
-    if (formData.email === 'admin' && formData.password === 'pass') {
+    if (formData.email === 'admin@gmail.com' && formData.password === '123456') {
       navigate('/admin/dashboard');
     } else {
       alert('Invalid admin credentials. Use username: admin, password: pass');
     }
   };
 
-  const pinkTheme = {
-    primary: 'rgb(255, 102, 163)',
-    primaryHover: '#e60073',
-    primaryLight: 'rgba(255, 102, 163, 0.1)',
-    primaryLighter: 'rgba(255, 102, 163, 0.05)'
-  };
+  // const pinkTheme = {
+  //   primary: 'rgb(255, 102, 163)',
+  //   primaryHover: '#e60073',
+  //   primaryLight: 'rgba(255, 102, 163, 0.1)',
+  //   primaryLighter: 'rgba(255, 102, 163, 0.05)'
+  // };
 
   return (
     <div className="signin-container">
