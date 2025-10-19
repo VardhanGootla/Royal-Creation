@@ -48,9 +48,14 @@ import { subcategoryData } from './landing_page/subcategories/subcategoryData';
 import SubCategoryPage from './landing_page/subcategories/SubCategoryPage';
 
 
+import { AuthProvider } from './hooks/AuthContext';
+
+import ScrollToTop from './components/ScrollToTop';
+
 function App() {
   return (
-     <>
+     <AuthProvider>
+    <ScrollToTop />
     <Navbar/>
     
     <main>
@@ -109,7 +114,7 @@ function App() {
     </Routes>
     </main>
     <Footer/>
-   </>
+   </AuthProvider>
   );
 }
 

@@ -66,7 +66,9 @@ const EventCategories = () => {
 
   return (
     <div className="container my-5 ">
-       <h2 className="mb-4 text-center fw-bold mt-5" >Event Services</h2>
+        <h2 className="mb-4 text-center fw-bold mt-5 display-5" style={{ color: 'rgba(69, 67, 68, 1)' }}>
+        Event Services
+        </h2>
       <div className="row">
         {categories.map((cat, index) => (
           <div key={index} className="col-md-6 mb-4">

@@ -14,7 +14,7 @@ function PopularSearch() {
   return (
     <section className="popular-searches py-5" style={{ backgroundColor: '#fdf2f7' }}>
       <div className="container ">
-        <h2 className="mb-4 text-center fw-bold mt-5 display-5" style={{ color: 'rgb(255, 102, 163)' }}>
+        <h2 className="mb-4 text-center fw-bold mt-5 display-5" style={{ color: 'rgba(69, 67, 68, 1)' }}>
         Event Categories
         </h2>
 

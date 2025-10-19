@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
 
 function Navbar() {
   const location = useLocation();
+  const { isAuthenticated, logout } = useAuth();
 
   const brandStyle = {
     fontWeight: '700',
@@ -100,7 +102,7 @@ function Navbar() {
           }
         `}
       </style>
-      <nav className="navbar navbar-expand-lg navbar-dark navbar-custom shadow-sm sticky-top py-3">
+      <nav className="navbar navbar-expand-lg navbar-dark navbar-custom shadow-sm sticky-top py-2">
         <div className="container">
           <Link className="navbar-brand" to="/" style={brandStyle}>
            <span style={{ color: 'white', fontWeight: 'bold' }}>Royal</span>
@@ -140,9 +142,15 @@ function Navbar() {
               </li>
             </ul>
             <div className="nav-buttons d-flex align-items-center">
-              <Link to="/signin" className="btn btn-signin" style={secondaryButtonStyle}>
-                Sign In
-              </Link>
+              {isAuthenticated ? (
+                <button onClick={logout} className="btn btn-signin" style={secondaryButtonStyle}>
+                  Sign Out
+                </button>
+              ) : (
+                <Link to="/signin" className="btn btn-signin" style={secondaryButtonStyle}>
+                  Sign In
+                </Link>
+              )}
               <Link to="/book-event" className="btn btn-booknow" style={ctaButtonStyle}>
                 Contact Us
               </Link>

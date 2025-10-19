@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './SignIn.css';
+import { useAuth } from '../hooks/useAuth';
 
 function SignIn() {
   const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ function SignIn() {
   });
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleChange = (e) => {
     setFormData({
@@ -30,7 +32,8 @@ function SignIn() {
       });
 
       if (response.ok) {
-        // Handle successful login, e.g., store token, redirect
+        const data = await response.json();
+        login(data.token);
         console.log('Sign in successful');
         navigate('/');
       } else {

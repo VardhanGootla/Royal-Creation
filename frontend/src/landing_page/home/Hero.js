@@ -3,7 +3,7 @@ import React from 'react';
 function Hero() {
   return (
   
-   <section className="hero position-relative" style={{ height: "70vh" }}>
+   <section className="hero position-relative" style={{ height: "80vh" }}>
 
   {/* Background Image */}
   <img

@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 
 // @route   POST api/users/register
@@ -22,9 +24,26 @@ router.post('/register', async (req, res) => {
       password,
     });
 
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(password, salt);
+
     await user.save();
 
-    res.send('User registered');
+    const payload = {
+      user: {
+        id: user.id,
+      },
+    };
+
+    jwt.sign(
+      payload,
+      process.env.JWT_SECRET, // You should use an environment variable for this
+      { expiresIn: 3600 },
+      (err, token) => {
+        if (err) throw err;
+        res.json({ token });
+      }
+    );
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
@@ -35,6 +54,7 @@ router.post('/register', async (req, res) => {
 // @desc    Authenticate user & get token
 // @access  Public
 router.post('/login', async (req, res) => {
+  console.log(req.body);
   const { email, password } = req.body;
 
   try {
@@ -44,26 +64,27 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ msg: 'Invalid credentials' });
     }
 
-    const isMatch = (password === user.password);
+    const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
       return res.status(400).json({ msg: 'Invalid credentials' });
     }
 
-    res.json({ msg: 'User logged in' });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-});
+    const payload = {
+      user: {
+        id: user.id,
+      },
+    };
 
-// @route   GET api/users
-// @desc    Get all users
-// @access  Public
-router.get('/', async (req, res) => {
-  try {
-    const users = await User.find();
-    res.json(users);
+    jwt.sign(
+      payload,
+      process.env.JWT_SECRET, // You should use an environment variable for this
+      { expiresIn: 3600 },
+      (err, token) => {
+        if (err) throw err;
+        res.json({ token });
+      }
+    );
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
@@ -71,4 +92,3 @@ router.get('/', async (req, res) => {
 });
 
 module.exports = router;
-
