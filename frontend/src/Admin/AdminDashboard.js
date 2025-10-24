@@ -31,7 +31,7 @@ function AdminDashboard() {
         >
           <div className="content-area">
             <Routes>
-              <Route path="/" element={<Overview />} />
+              {/* <Route path="/" element={<Overview />} /> */}
               <Route path="/bookings" element={<Bookings />} />
               <Route path="/contacts" element={<Contacts />} />
               <Route path="/users" element={<Users />} />
@@ -95,7 +95,7 @@ function AdminNavbar({ sidebarOpen, setSidebarOpen, onLogout }) {
 // Admin Sidebar Component
 function AdminSidebar({ sidebarOpen, currentPath }) {
   const menuItems = [
-    { path: "/admin/dashboard", icon: "📊", label: "Overview" },
+    // { path: "/admin/dashboard", icon: "📊", label: "Overview" },
     { path: "/admin/dashboard/bookings", icon: "📅", label: "Bookings" },
     { path: "/admin/dashboard/contacts", icon: "📝", label: "Contacts" },
     { path: "/admin/dashboard/users", icon: "👥", label: "Users" },
@@ -123,94 +123,94 @@ function AdminSidebar({ sidebarOpen, currentPath }) {
 }
 
 // Overview Component
-function Overview() {
-  const stats = [
-    { title: "Total Bookings", value: "0", change: "+0", icon: "📅" },
-    { title: "Revenue", value: "0", change: "+0", icon: "💰" },
-    { title: "Active Users", value: "3", change: "+3%", icon: "👥" },
-    { title: "Services", value: "8", change: "+0", icon: "🎯" },
-  ];
+// function Overview() {
+//   const stats = [
+//     { title: "Total Bookings", value: "0", change: "+0", icon: "📅" },
+//     { title: "Revenue", value: "0", change: "+0", icon: "💰" },
+//     { title: "Active Users", value: "3", change: "+3%", icon: "👥" },
+//     { title: "Services", value: "8", change: "+0", icon: "🎯" },
+//   ];
 
-  const recentActivities = [
-    { user: "John Doe", action: "Booked Wedding Planning", time: "2 min ago" },
-    { user: "Sarah Smith", action: "Cancelled Event", time: "1 hour ago" },
-    { user: "Mike Johnson", action: "Updated Profile", time: "2 hours ago" },
-    {
-      user: "Emily Davis",
-      action: "Booked Birthday Party",
-      time: "3 hours ago",
-    },
-  ];
+//   const recentActivities = [
+//     { user: "John Doe", action: "Booked Wedding Planning", time: "2 min ago" },
+//     { user: "Sarah Smith", action: "Cancelled Event", time: "1 hour ago" },
+//     { user: "Mike Johnson", action: "Updated Profile", time: "2 hours ago" },
+//     {
+//       user: "Emily Davis",
+//       action: "Booked Birthday Party",
+//       time: "3 hours ago",
+//     },
+//   ];
 
-  return (
-    <div className="overview-page">
-      <div className="page-header">
-        <h1>Dashboard Overview</h1>
-        <p>Welcome to your admin dashboard</p>
-      </div>
+//   return (
+//     <div className="overview-page">
+//       <div className="page-header">
+//         <h1>Dashboard Overview</h1>
+//         <p>Welcome to your admin dashboard</p>
+//       </div>
 
-      {/* Stats Cards */}
-      <div className="stats-grid">
-        {stats.map((stat, index) => (
-          <div key={index} className="stat-card">
-            <div className="stat-icon">{stat.icon}</div>
-            <div className="stat-content">
-              <h3>{stat.value}</h3>
-              <p>{stat.title}</p>
-              <span
-                className={`stat-change ${
-                  stat.change.includes("+") ? "positive" : "negative"
-                }`}
-              >
-                {stat.change}
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
+//       {/* Stats Cards */}
+//       <div className="stats-grid">
+//         {stats.map((stat, index) => (
+//           <div key={index} className="stat-card">
+//             <div className="stat-icon">{stat.icon}</div>
+//             <div className="stat-content">
+//               <h3>{stat.value}</h3>
+//               <p>{stat.title}</p>
+//               <span
+//                 className={`stat-change ${
+//                   stat.change.includes("+") ? "positive" : "negative"
+//                 }`}
+//               >
+//                 {stat.change}
+//               </span>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
 
-      {/* Charts and Activities */}
-      <div className="overview-content">
-        <div className="chart-section">
-          <div className="section-card">
-            <h3>Revenue Overview</h3>
-            <div className="chart-placeholder">
-              <div className="chart-bars">
-                {[65, 80, 45, 90, 75, 50, 85].map((height, index) => (
-                  <div
-                    key={index}
-                    className="chart-bar"
-                    style={{ height: `${height}%` }}
-                  ></div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+//       {/* Charts and Activities */}
+//       <div className="overview-content">
+//         <div className="chart-section">
+//           <div className="section-card">
+//             <h3>Revenue Overview</h3>
+//             <div className="chart-placeholder">
+//               <div className="chart-bars">
+//                 {[65, 80, 45, 90, 75, 50, 85].map((height, index) => (
+//                   <div
+//                     key={index}
+//                     className="chart-bar"
+//                     style={{ height: `${height}%` }}
+//                   ></div>
+//                 ))}
+//               </div>
+//             </div>
+//           </div>
+//         </div>
 
-        <div className="activities-section">
-          <div className="section-card">
-            <h3>Recent Activities</h3>
-            <div className="activities-list">
-              {recentActivities.map((activity, index) => (
-                <div key={index} className="activity-item">
-                  <div className="activity-avatar">
-                    {activity.user.charAt(0)}
-                  </div>
-                  <div className="activity-details">
-                    <strong>{activity.user}</strong>
-                    <span>{activity.action}</span>
-                  </div>
-                  <div className="activity-time">{activity.time}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+//         <div className="activities-section">
+//           <div className="section-card">
+//             <h3>Recent Activities</h3>
+//             <div className="activities-list">
+//               {recentActivities.map((activity, index) => (
+//                 <div key={index} className="activity-item">
+//                   <div className="activity-avatar">
+//                     {activity.user.charAt(0)}
+//                   </div>
+//                   <div className="activity-details">
+//                     <strong>{activity.user}</strong>
+//                     <span>{activity.action}</span>
+//                   </div>
+//                   <div className="activity-time">{activity.time}</div>
+//                 </div>
+//               ))}
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
 
 // Bookings Component
 function Bookings() {

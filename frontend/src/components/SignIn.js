@@ -8,7 +8,7 @@ function SignIn() {
     email: '',
     password: ''
   });
-  const [rememberMe, setRememberMe] = useState(false);
+  // const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
 
@@ -49,7 +49,7 @@ function SignIn() {
   // Add the missing handleAdminLogin function
   const handleAdminLogin = () => {
     if (formData.email === 'admin@gmail.com' && formData.password === '123456') {
-      navigate('/admin/dashboard');
+      navigate('/admin/dashboard/bookings');
     } else {
       alert('Invalid admin credentials. Use username: admin, password: pass');
     }
@@ -117,7 +117,7 @@ function SignIn() {
               <p>Sign in to your Royal Creation account</p>
             </div>
 
-            {/* Social Login Buttons */}
+            {/* Social Login Buttons
             <div className="social-login">
               <button className="social-btn google-btn">
                 <svg width="18" height="18" viewBox="0 0 24 24">
@@ -139,7 +139,7 @@ function SignIn() {
 
             <div className="divider">
               <span>or continue with email</span>
-            </div>
+            </div> */}
 
             {/* SignIn Form */}
             <form onSubmit={handleSubmit} className="signin-form">
@@ -171,7 +171,7 @@ function SignIn() {
                 />
               </div>
 
-              <div className="form-options">
+              {/* <div className="form-options">
                 <label className="checkbox-label">
                   <input
                     type="checkbox"
@@ -185,7 +185,7 @@ function SignIn() {
                 <Link to="/forgot-password" className="forgot-link">
                   Forgot Password?
                 </Link>
-              </div>
+              </div> */}
               
               <button type="submit" className="signin-btn">
                 Sign In

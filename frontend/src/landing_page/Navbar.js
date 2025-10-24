@@ -128,9 +128,9 @@ function Navbar() {
               <li className="nav-item">
                 <Link className={`nav-link ${location.pathname === '/about' ? 'active' : ''}`} to="/about" style={navLinkStyle}>About</Link>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <Link className={`nav-link ${location.pathname === '/services' ? 'active' : ''}`} to="/services" style={navLinkStyle}>Services</Link>
-              </li>
+              </li> */}
               <li className="nav-item">
                 <Link className={`nav-link ${location.pathname === '/weddings' ? 'active' : ''}`} to="/weddings" style={navLinkStyle}>Weddings</Link>
               </li>
