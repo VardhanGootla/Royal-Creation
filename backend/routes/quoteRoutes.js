@@ -73,4 +73,23 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+// @route   DELETE api/quotes/:id
+// @desc    Delete a quote
+// @access  Private
+router.delete('/:id', async (req, res) => {
+  try {
+    const quote = await Quote.findById(req.params.id);
+
+    if (!quote) {
+      return res.status(404).json({ msg: 'Quote not found' });
+    }
+
+    await Quote.findByIdAndDelete(req.params.id);
+    res.json({ msg: 'Quote deleted successfully' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;
