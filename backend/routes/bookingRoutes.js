@@ -1,12 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const Booking = require('../models/bookingModel');
+const { sendBookingEmails } = require('../services/emailService');
 
 // @route   POST api/bookings
 // @desc    Create a new booking
 // @access  Public
 router.post('/', async (req, res) => {
-  const { name, email, phone, eventDate, eventType, budget, status } = req.body;
+  const { name, email, phone, eventDate, eventType, event, budget, status } = req.body;
+  
+  console.log('Received booking data:', req.body);
+  console.log('eventDate value:', eventDate);
+  console.log('eventType value:', eventType);
 
   try {
     const newBooking = new Booking({
@@ -14,17 +19,39 @@ router.post('/', async (req, res) => {
       email,
       phone,
       eventDate,
-      eventType,
+      eventType: eventType || event, // Handle both field names
       budget,
       status: status || 'Pending',
     });
 
     const booking = await newBooking.save();
 
+    // Send emails after successful booking
+    try {
+      console.log('Attempting to send emails...');
+      const emailResult = await sendBookingEmails(booking);
+      console.log('Email sending result:', emailResult);
+    } catch (emailError) {
+      console.error('Email sending failed:', emailError);
+      console.error('Email error details:', emailError.message);
+      // Don't fail the booking if email fails
+    }
+
     res.json(booking);
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
+    console.error('Booking creation error:', err.message);
+    console.error('Full error:', err);
+    
+    // Send more specific error message
+    if (err.name === 'ValidationError') {
+      const errors = Object.values(err.errors).map(e => e.message);
+      return res.status(400).json({ 
+        message: 'Validation failed', 
+        errors: errors 
+      });
+    }
+    
+    res.status(500).json({ message: 'Server Error', error: err.message });
   }
 });
 
