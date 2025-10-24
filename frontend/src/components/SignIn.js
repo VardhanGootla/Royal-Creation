@@ -51,7 +51,7 @@ function SignIn() {
     if (formData.email === 'admin@gmail.com' && formData.password === '123456') {
       navigate('/admin/dashboard/bookings');
     } else {
-      alert('Invalid admin credentials. Use username: admin, password: pass');
+      alert('Invalid admin credentials.');
     }
   };
 
