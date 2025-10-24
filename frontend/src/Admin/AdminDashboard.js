@@ -734,6 +734,26 @@ function Contacts() {
     }
   };
 
+  const handleDelete = async (quoteId) => {
+    if (window.confirm('Are you sure you want to delete this contact?')) {
+      try {
+        const response = await fetch(`http://localhost:5000/api/quotes/${quoteId}`, {
+          method: 'DELETE'
+        });
+
+        if (response.ok) {
+          setQuotes(quotes.filter(quote => quote._id !== quoteId));
+          alert('Contact deleted successfully');
+        } else {
+          alert('Failed to delete contact');
+        }
+      } catch (error) {
+        console.error('Error deleting contact:', error);
+        alert('Error deleting contact');
+      }
+    }
+  };
+
 
   return (
     <div className="contacts-page">
@@ -774,7 +794,12 @@ function Contacts() {
                     />
                   </td>
                   <td> 
-                    <button className="btn-delete">Delete</button>
+                    <button 
+                      className="btn-delete"
+                      onClick={() => handleDelete(quote._id)}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
