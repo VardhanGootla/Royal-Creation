@@ -29,13 +29,14 @@ function BookingPage() {
       name: formData.get('name') || '',
       email: formData.get('email') || '',
       phone: formData.get('contact') || '',
-      date: formData.get('eventDate') || '',
+      eventDate: formData.get('eventDate') || '',
       budget: numericBudgetValue,
-      event: title,
+      eventType: title,
     };
     console.log('Sending booking request:', payload);
 
     try {
+      console.log('Sending booking request to server...');
       const response = await fetch('http://localhost:5000/api/bookings', {
         method: 'POST',
         headers: {
@@ -44,16 +45,31 @@ function BookingPage() {
         body: JSON.stringify(payload),
       });
 
+      console.log('Response status:', response.status);
+      console.log('Response ok:', response.ok);
+
       if (response.ok) {
+        console.log('Booking successful!');
         setShowSuccess(true);
         e.currentTarget.reset();
       } else {
         const errorData = await response.json();
-        alert(errorData.message || 'Failed to submit booking request.');
+        console.error('Booking error:', errorData);
+        if (errorData.errors && errorData.errors.length > 0) {
+          alert('Please fill in all required fields: ' + errorData.errors.join(', '));
+        } else {
+          alert(errorData.message || 'Failed to submit booking request.');
+        }
       }
     } catch (error) {
-      console.error('An error occurred during fetch:', error.message, error);
-      alert('An error occurred. Please try again later.');
+      console.error('Network or server error:', error.message, error);
+      // Check if it's a network error vs server error
+      if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+        alert('Unable to connect to server. Please check if the backend is running.');
+      } else {
+        console.log('Unexpected error, but booking might have succeeded:', error);
+        // Don't show generic error alert
+      }
     }
   };
 

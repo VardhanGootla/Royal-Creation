@@ -734,9 +734,6 @@ function Contacts() {
     }
   };
 
-  const handleContactNow = (email) => {
-    window.open(`mailto:${email}`, '_blank');
-  };
 
   return (
     <div className="contacts-page">
@@ -758,7 +755,6 @@ function Contacts() {
                 <th>Email</th>
                 <th>Event Date</th>
                 <th>Event Type</th>
-                <th>Contact Now</th>
                 <th>Contacted</th>
                 <th>Actions</th>
               </tr>
@@ -770,14 +766,6 @@ function Contacts() {
                   <td>{quote.email}</td>
                     <td>{new Date(quote.eventDate).toLocaleDateString()}</td>
                     <td>{quote.eventType}</td>
-                    <td>
-                      <button 
-                        className="btn-primary"
-                        onClick={() => handleContactNow(quote.email)}
-                      >
-                        Contact Now
-                      </button>
-                    </td>
                   <td>
                     <input 
                       type="checkbox" 
