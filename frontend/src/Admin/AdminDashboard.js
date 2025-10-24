@@ -99,9 +99,9 @@ function AdminSidebar({ sidebarOpen, currentPath }) {
     { path: "/admin/dashboard/bookings", icon: "📅", label: "Bookings" },
     { path: "/admin/dashboard/contacts", icon: "📝", label: "Contacts" },
     { path: "/admin/dashboard/users", icon: "👥", label: "Users" },
-    { path: "/admin/dashboard/services", icon: "🎯", label: "Services" },
-    { path: "/admin/dashboard/vendors", icon: "🏪", label: "Vendors" },
-    { path: "/admin/dashboard/settings", icon: "⚙️", label: "Settings" },
+    // { path: "/admin/dashboard/services", icon: "🎯", label: "Services" },
+    // { path: "/admin/dashboard/vendors", icon: "🏪", label: "Vendors" },
+    // { path: "/admin/dashboard/settings", icon: "⚙️", label: "Settings" },
   ];
 
   return (
@@ -215,6 +215,17 @@ function AdminSidebar({ sidebarOpen, currentPath }) {
 // Bookings Component
 function Bookings() {
   const [bookings, setBookings] = React.useState([]);
+  const [showEditForm, setShowEditForm] = React.useState(false);
+  const [editingBooking, setEditingBooking] = React.useState(null);
+  const [editFormData, setEditFormData] = React.useState({
+    name: '',
+    email: '',
+    phone: '',
+    eventDate: '',
+    eventType: '',
+    budget: '',
+    status: 'Pending'
+  });
 
   React.useEffect(() => {
     const fetchBookings = async () => {
@@ -241,6 +252,75 @@ function Bookings() {
       default:
         return "";
     }
+  };
+
+  const handleEdit = (booking) => {
+    setEditingBooking(booking);
+    setEditFormData({
+      name: booking.name,
+      email: booking.email,
+      phone: booking.phone,
+      eventDate: new Date(booking.eventDate).toISOString().split('T')[0],
+      eventType: booking.eventType,
+      budget: booking.budget || '',
+      status: booking.status
+    });
+    setShowEditForm(true);
+  };
+
+  const handleDelete = async (bookingId) => {
+    if (window.confirm('Are you sure you want to delete this booking?')) {
+      try {
+        const response = await fetch(`http://localhost:5000/api/bookings/${bookingId}`, {
+          method: 'DELETE'
+        });
+
+        if (response.ok) {
+          setBookings(bookings.filter(booking => booking._id !== bookingId));
+          alert('Booking deleted successfully');
+        } else {
+          alert('Failed to delete booking');
+        }
+      } catch (error) {
+        console.error('Error deleting booking:', error);
+        alert('Error deleting booking');
+      }
+    }
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:5000/api/bookings/${editingBooking._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(editFormData)
+      });
+
+      if (response.ok) {
+        const updatedBooking = await response.json();
+        setBookings(bookings.map(booking => 
+          booking._id === editingBooking._id ? updatedBooking : booking
+        ));
+        setShowEditForm(false);
+        setEditingBooking(null);
+        alert('Booking updated successfully');
+      } else {
+        alert('Failed to update booking');
+      }
+    } catch (error) {
+      console.error('Error updating booking:', error);
+      alert('Error updating booking');
+    }
+  };
+
+  const handleEditFormChange = (e) => {
+    setEditFormData({
+      ...editFormData,
+      [e.target.name]: e.target.value
+    });
   };
 
   return (
@@ -288,8 +368,18 @@ function Bookings() {
                   <td>${booking.budget ? booking.budget.toFixed(2) : '0.00'}</td>
                   <td>
                     <div className="action-buttons">
-                      <button className="btn-edit">Edit</button>
-                      <button className="btn-delete">Delete</button>
+                      <button 
+                        className="btn-edit"
+                        onClick={() => handleEdit(booking)}
+                      >
+                        Edit
+                      </button>
+                      <button 
+                        className="btn-delete"
+                        onClick={() => handleDelete(booking._id)}
+                      >
+                        Delete
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -298,6 +388,128 @@ function Bookings() {
           </table>
         </div>
       </div>
+
+      {/* Edit Booking Form Modal */}
+      {showEditForm && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3>Edit Booking</h3>
+              <button 
+                className="modal-close"
+                onClick={() => setShowEditForm(false)}
+              >
+                ×
+              </button>
+            </div>
+            <form onSubmit={handleEditSubmit} className="edit-form">
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Customer Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={editFormData.name}
+                    onChange={handleEditFormChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={editFormData.email}
+                    onChange={handleEditFormChange}
+                    required
+                  />
+                </div>
+              </div>
+              
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Phone</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={editFormData.phone}
+                    onChange={handleEditFormChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Event Date</label>
+                  <input
+                    type="date"
+                    name="eventDate"
+                    value={editFormData.eventDate}
+                    onChange={handleEditFormChange}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Event Type</label>
+                  <select
+                    name="eventType"
+                    value={editFormData.eventType}
+                    onChange={handleEditFormChange}
+                    required
+                  >
+                    <option value="">Select Event Type</option>
+                    <option value="Wedding">Wedding</option>
+                    <option value="Birthday">Birthday</option>
+                    <option value="Anniversary">Anniversary</option>
+                    <option value="Corporate">Corporate</option>
+                    <option value="Engagement">Engagement</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label>Budget</label>
+                  <input
+                    type="number"
+                    name="budget"
+                    value={editFormData.budget}
+                    onChange={handleEditFormChange}
+                    min="0"
+                    step="0.01"
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>Status</label>
+                <select
+                  name="status"
+                  value={editFormData.status}
+                  onChange={handleEditFormChange}
+                  required
+                >
+                  <option value="Pending">Pending</option>
+                  <option value="Confirmed">Confirmed</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </div>
+
+              <div className="form-actions">
+                <button type="submit" className="btn-primary">
+                  Update Booking
+                </button>
+                <button 
+                  type="button" 
+                  className="btn-secondary"
+                  onClick={() => setShowEditForm(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -323,8 +535,8 @@ function Contacts() {
   return (
     <div className="contacts-page">
       <div className="page-header">
-        <h1>Contacts</h1>
-        <p>View and manage customer contacts</p>
+        <h1>Contacts Us</h1>
+        <p>Tried to contact us</p>
       </div>
 
       <div className="section-card">
@@ -340,7 +552,7 @@ function Contacts() {
                 <th>Email</th>
                 <th>Event Date</th>
                 <th>Event Type</th>
-                <th>Budget</th>
+                <th>Contacted Successfully</th>
               </tr>
             </thead>
             <tbody>
@@ -350,7 +562,7 @@ function Contacts() {
                   <td>{quote.email}</td>
                   <td>{new Date(quote.eventDate).toLocaleDateString()}</td>
                   <td>{quote.eventType}</td>
-                  <td>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(quote.budget)}</td>
+                  <td><input type="checkbox" checked={quote.contactedSuccessfully} /></td>
                 </tr>
               ))}
             </tbody>
@@ -404,7 +616,6 @@ function Users() {
                 <th>Email</th>
                 <th>Phone</th>
                 <th>Join Date</th>
-                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -419,12 +630,6 @@ function Users() {
                   <td>{user.email}</td>
                   <td>{user.phone}</td>
                   <td>{new Date(user.createdAt).toLocaleDateString()}</td>
-                  <td>
-                    <div className="action-buttons">
-                      <button className="btn-edit">View</button>
-                      <button className="btn-delete">Message</button>
-                    </div>
-                  </td>
                 </tr>
               ))}
             </tbody>
@@ -958,6 +1163,7 @@ const adminStyles = `
   .admin-sidebar.closed {
     width: 0;
     transform: translateX(-100%);
+    overflow: hidden;
   }
 
   .sidebar-menu {
@@ -1468,6 +1674,108 @@ const adminStyles = `
     background: #4b5563;
   }
 
+  /* Modal Styles */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .modal-content {
+    background: white;
+    border-radius: 16px;
+    padding: 0;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .modal-header h3 {
+    margin: 0;
+    color: #333;
+    font-size: 1.3rem;
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #666;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+
+  .modal-close:hover {
+    background: #f3f4f6;
+    color: #333;
+  }
+
+  .edit-form {
+    padding: 2rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group label {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #333;
+  }
+
+  .form-group input,
+  .form-group select {
+    padding: 0.75rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: rgb(255, 102, 163);
+    box-shadow: 0 0 0 3px rgba(255, 102, 163, 0.1);
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+  }
+
   /* Responsive Design */
   @media (max-width: 768px) {
     .admin-navbar {
@@ -1501,6 +1809,19 @@ const adminStyles = `
     }
 
     .settings-actions {
+      flex-direction: column;
+    }
+
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+      width: 95%;
+      margin: 1rem;
+    }
+
+    .form-actions {
       flex-direction: column;
     }
   }
