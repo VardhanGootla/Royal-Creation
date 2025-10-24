@@ -216,8 +216,18 @@ function AdminSidebar({ sidebarOpen, currentPath }) {
 function Bookings() {
   const [bookings, setBookings] = React.useState([]);
   const [showEditForm, setShowEditForm] = React.useState(false);
+  const [showNewBookingForm, setShowNewBookingForm] = React.useState(false);
   const [editingBooking, setEditingBooking] = React.useState(null);
   const [editFormData, setEditFormData] = React.useState({
+    name: '',
+    email: '',
+    phone: '',
+    eventDate: '',
+    eventType: '',
+    budget: '',
+    status: 'Pending'
+  });
+  const [newBookingFormData, setNewBookingFormData] = React.useState({
     name: '',
     email: '',
     phone: '',
@@ -323,6 +333,47 @@ function Bookings() {
     });
   };
 
+  const handleNewBookingSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:5000/api/bookings", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newBookingFormData)
+      });
+
+      if (response.ok) {
+        const newBooking = await response.json();
+        setBookings([...bookings, newBooking]);
+        setShowNewBookingForm(false);
+        setNewBookingFormData({
+          name: '',
+          email: '',
+          phone: '',
+          eventDate: '',
+          eventType: '',
+          budget: '',
+          status: 'Pending'
+        });
+        alert('Booking created successfully');
+      } else {
+        alert('Failed to create booking');
+      }
+    } catch (error) {
+      console.error('Error creating booking:', error);
+      alert('Error creating booking');
+    }
+  };
+
+  const handleNewBookingFormChange = (e) => {
+    setNewBookingFormData({
+      ...newBookingFormData,
+      [e.target.name]: e.target.value
+    });
+  };
+
   return (
     <div className="bookings-page">
       <div className="page-header">
@@ -333,7 +384,12 @@ function Bookings() {
       <div className="section-card">
         <div className="table-header">
           <h3>Recent Bookings</h3>
-          <button className="btn-primary">+ New Booking</button>
+          <button 
+            className="btn-primary"
+            onClick={() => setShowNewBookingForm(true)}
+          >
+            + New Booking
+          </button>
         </div>
 
         <div className="table-container">
@@ -365,7 +421,7 @@ function Bookings() {
                       {booking.status}
                     </span>
                   </td>
-                  <td>${booking.budget ? booking.budget.toFixed(2) : '0.00'}</td>
+                  <td>₹{booking.budget ? booking.budget.toFixed(2) : '0.00'}</td>
                   <td>
                     <div className="action-buttons">
                       <button 
@@ -510,6 +566,128 @@ function Bookings() {
           </div>
         </div>
       )}
+
+      {/* New Booking Form Modal */}
+      {showNewBookingForm && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3>Create New Booking</h3>
+              <button 
+                className="modal-close"
+                onClick={() => setShowNewBookingForm(false)}
+              >
+                ×
+              </button>
+            </div>
+            <form onSubmit={handleNewBookingSubmit} className="edit-form">
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Customer Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={newBookingFormData.name}
+                    onChange={handleNewBookingFormChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={newBookingFormData.email}
+                    onChange={handleNewBookingFormChange}
+                    required
+                  />
+                </div>
+              </div>
+              
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Phone</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={newBookingFormData.phone}
+                    onChange={handleNewBookingFormChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Event Date</label>
+                  <input
+                    type="date"
+                    name="eventDate"
+                    value={newBookingFormData.eventDate}
+                    onChange={handleNewBookingFormChange}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Event Type</label>
+                  <select
+                    name="eventType"
+                    value={newBookingFormData.eventType}
+                    onChange={handleNewBookingFormChange}
+                    required
+                  >
+                    <option value="">Select Event Type</option>
+                    <option value="Wedding">Wedding</option>
+                    <option value="Birthday">Birthday</option>
+                    <option value="Anniversary">Anniversary</option>
+                    <option value="Corporate">Corporate</option>
+                    <option value="Engagement">Engagement</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label>Budget</label>
+                  <input
+                    type="number"
+                    name="budget"
+                    value={newBookingFormData.budget}
+                    onChange={handleNewBookingFormChange}
+                    min="0"
+                    step="0.01"
+                  />
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>Status</label>
+                <select
+                  name="status"
+                  value={newBookingFormData.status}
+                  onChange={handleNewBookingFormChange}
+                  required
+                >
+                  <option value="Pending">Pending</option>
+                  <option value="Confirmed">Confirmed</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </div>
+
+              <div className="form-actions">
+                <button type="submit" className="btn-primary">
+                  Create Booking
+                </button>
+                <button 
+                  type="button" 
+                  className="btn-secondary"
+                  onClick={() => setShowNewBookingForm(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -532,6 +710,34 @@ function Contacts() {
     fetchQuotes();
   }, []);
 
+  const handleContactedChange = async (quoteId, contacted) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/quotes/${quoteId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ contactedSuccessfully: contacted })
+      });
+
+      if (response.ok) {
+        const updatedQuote = await response.json();
+        setQuotes(quotes.map(quote => 
+          quote._id === quoteId ? updatedQuote : quote
+        ));
+      } else {
+        alert('Failed to update contact status');
+      }
+    } catch (error) {
+      console.error('Error updating contact status:', error);
+      alert('Error updating contact status');
+    }
+  };
+
+  const handleContactNow = (email) => {
+    window.open(`mailto:${email}`, '_blank');
+  };
+
   return (
     <div className="contacts-page">
       <div className="page-header">
@@ -552,7 +758,9 @@ function Contacts() {
                 <th>Email</th>
                 <th>Event Date</th>
                 <th>Event Type</th>
-                <th>Contacted Successfully</th>
+                <th>Contact Now</th>
+                <th>Contacted</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -560,9 +768,26 @@ function Contacts() {
                 <tr key={quote._id}>
                   <td>{quote.name}</td>
                   <td>{quote.email}</td>
-                  <td>{new Date(quote.eventDate).toLocaleDateString()}</td>
-                  <td>{quote.eventType}</td>
-                  <td><input type="checkbox" checked={quote.contactedSuccessfully} /></td>
+                    <td>{new Date(quote.eventDate).toLocaleDateString()}</td>
+                    <td>{quote.eventType}</td>
+                    <td>
+                      <button 
+                        className="btn-primary"
+                        onClick={() => handleContactNow(quote.email)}
+                      >
+                        Contact Now
+                      </button>
+                    </td>
+                  <td>
+                    <input 
+                      type="checkbox" 
+                      checked={quote.contactedSuccessfully || false}
+                      onChange={(e) => handleContactedChange(quote._id, e.target.checked)}
+                    />
+                  </td>
+                  <td> 
+                    <button className="btn-delete">Delete</button>
+                  </td>
                 </tr>
               ))}
             </tbody>
