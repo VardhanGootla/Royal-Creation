@@ -6,16 +6,17 @@ const Booking = require('../models/bookingModel');
 // @desc    Create a new booking
 // @access  Public
 router.post('/', async (req, res) => {
-  const { name, email, phone, date, budget, event } = req.body;
+  const { name, email, phone, eventDate, eventType, budget, status } = req.body;
 
   try {
     const newBooking = new Booking({
       name,
       email,
       phone,
-      eventDate: date,
-      eventType: event,
+      eventDate,
+      eventType,
       budget,
+      status: status || 'Pending',
     });
 
     const booking = await newBooking.save();

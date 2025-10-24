@@ -30,6 +30,10 @@ const quoteSchema = new mongoose.Schema({
   budget: {
     type: Number,
   },
+  contactedSuccessfully: {
+    type: Boolean,
+    default: false,
+  },
 }, {
   timestamps: true,
 });

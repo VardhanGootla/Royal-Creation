@@ -42,4 +42,35 @@ router.get('/', async (req, res) => {
   }
 });
 
+// @route   PUT api/quotes/:id
+// @desc    Update a quote
+// @access  Private
+router.put('/:id', async (req, res) => {
+  const { name, email, phone, eventDate, eventType, budget, numberOfGuests, message, contactedSuccessfully } = req.body;
+
+  try {
+    const quote = await Quote.findById(req.params.id);
+
+    if (!quote) {
+      return res.status(404).json({ msg: 'Quote not found' });
+    }
+
+    quote.name = name || quote.name;
+    quote.email = email || quote.email;
+    quote.phone = phone || quote.phone;
+    quote.eventDate = eventDate || quote.eventDate;
+    quote.eventType = eventType || quote.eventType;
+    quote.budget = budget !== undefined ? budget : quote.budget;
+    quote.numberOfGuests = numberOfGuests !== undefined ? numberOfGuests : quote.numberOfGuests;
+    quote.message = message || quote.message;
+    quote.contactedSuccessfully = contactedSuccessfully !== undefined ? contactedSuccessfully : quote.contactedSuccessfully;
+
+    await quote.save();
+    res.json(quote);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;
