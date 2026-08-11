@@ -13,7 +13,8 @@ app.use(cors({
   origin: [
     'http://localhost:3000',                  // Local frontend testing
     'https://royalcreation-two.vercel.app/', // Your live Vercel URL
-    'https://royalcreation.vercel.app'
+    'https://royalcreation.vercel.app',
+    'https://royalcreation-jqgkl55v9-sumitlone1912-2746s-projects.vercel.app'
   ],
   credentials: true
 }));
