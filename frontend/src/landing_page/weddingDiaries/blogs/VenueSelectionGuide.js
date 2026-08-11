@@ -5,7 +5,7 @@ import Footer from "../../Footer";
 const VenueSelectionGuide = () => {
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <div class="container py-5">
         <h1
           class="text-3xl font-bold text-center mb-8"
@@ -95,7 +95,7 @@ const VenueSelectionGuide = () => {
           </article>
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

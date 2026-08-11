@@ -5,7 +5,7 @@ import Footer from '../../Footer';
 const DecorTrends = () => {
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold text-center mb-8" style={{ color: 'rgb(255, 102, 163)' }}>From bold colors to sustainable touches, explore what’s in this year</h1>
         <div className="prose lg:prose-xl mx-auto">
@@ -75,7 +75,7 @@ const DecorTrends = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

@@ -5,7 +5,7 @@ import Footer from '../../Footer';
 const EventBudgeting = () => {
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold text-center mb-8" style={{ color: 'rgb(255, 102, 163)' }}>Plan wisely, spend smartly, and make your celebration unforgettable</h1>
         <div className="prose lg:prose-xl mx-auto">
@@ -63,7 +63,7 @@ const EventBudgeting = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };
