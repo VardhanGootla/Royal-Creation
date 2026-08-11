@@ -12,7 +12,8 @@ const app = express();
 app.use(cors({
   origin: [
     'http://localhost:3000',                  // Local frontend testing
-    'https://royalcreation-two.vercel.app/' // Your live Vercel URL
+    'https://royalcreation-two.vercel.app/', // Your live Vercel URL
+    'https://royalcreation.vercel.app'
   ],
   credentials: true
 }));
