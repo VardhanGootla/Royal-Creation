@@ -17,8 +17,8 @@ import SignIn from './components/SignIn';
 import SignUp from './components/SignUp'; 
 import AdminDashboard from './Admin/AdminDashboard';
 import WeddingCategoriesPage from './landing_page/weddingDiaries/WeddingCategoriesPage';
-import Meetings from './landing_page/weddingDiaries/Meetings';
-import BirthdayStories from './landing_page/weddingDiaries/BirthdayStories';
+
+
 import Gujarati from './landing_page/weddingDiaries/WeddingsByCultur/Gujarati';
 import Maharashtrian from './landing_page/weddingDiaries/WeddingsByCultur/Maharashtrian';
 import Marwadi from './landing_page/weddingDiaries/WeddingsByCultur/Marwadi';
